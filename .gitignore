@@ -19,3 +19,6 @@ db.sqlite3
 .vscode/
 *.iml
 .DS_Store
+# Symfony versiona .env y .env.dev (sin secretos de producción); .env.local no se versiona
+!parte1/cap04-crud/symfony/.env
+!parte1/cap04-crud/symfony/.env.dev

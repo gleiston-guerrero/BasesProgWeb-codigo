@@ -148,6 +148,12 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<!-- Ejercicio E4.4: imagen reconstruida con el iniciador de Redis -->
+					<image>
+						<name>sgpc:1.1</name>
+					</image>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

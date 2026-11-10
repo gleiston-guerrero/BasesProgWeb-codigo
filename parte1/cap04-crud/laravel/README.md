@@ -3,8 +3,8 @@
 Proyecto del apartado «Laravel — CRUD de proveedores» (Capítulo 4). Se creó con las órdenes del libro:
 
 ```bash
-composer create-project laravel/laravel proveedores-api "13.*"   # plantilla laravel/laravel v13.11.0
-cd proveedores-api
+composer create-project laravel/laravel proveedores-laravel "13.*"   # plantilla laravel/laravel v13.11.0
+cd proveedores-laravel
 php artisan install:api
 php artisan make:model Proveedor --controller --api
 php artisan make:migration create_proveedores_table

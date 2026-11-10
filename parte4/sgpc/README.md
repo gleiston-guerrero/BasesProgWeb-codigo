@@ -64,7 +64,7 @@ Para la Práctica 13 se quita el `#` de la última línea de `application.proper
 
 ```bash
 cp .env.example .env          # PowerShell: Copy-Item .env.example .env  — y editar los valores
-./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=sgpc:1.0
+./mvnw spring-boot:build-image   # pom.xml fija el nombre de la imagen: sgpc:1.0
 docker compose up -d
 curl -i localhost:8080/actuator/health     # 503 mientras arranca; luego 200 UP
 ```
@@ -80,6 +80,8 @@ docker compose exec db psql -U sgpc_app -d sgpc
 Después, `POST /auth/login` con `admin` devuelve un token y `/actuator/health` con ese token
 muestra `db` y `jwtClave` en `UP`. `docker compose down` + `docker compose up -d` conserva los
 datos (volumen `datos_sgpc`); `docker compose down -v` los borra.
+
+> **Avisos inofensivos de Maven.** Al construir o ejecutar, `./mvnw` puede mostrar `[WARNING] Could not transfer metadata ... from/to flyway-community-db-support (https://maven.pkg.github.com/...): HTTP Status: 401` y otro parecido para `red-gate.pkgs.visualstudio.com`. Proceden de los repositorios que declara el POM padre de Flyway (`org.flywaydb:flyway-parent`), no del `pom.xml` del proyecto, y no impiden la construcción: todas las dependencias se descargan de Maven Central y el resultado es `BUILD SUCCESS`.
 
 ## Resultados comprobados (10-11-2026)
 

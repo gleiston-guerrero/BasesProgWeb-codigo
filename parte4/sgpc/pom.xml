@@ -147,6 +147,12 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<!-- Nombre de la imagen de spring-boot:build-image (Práctica 15, compose.yaml) -->
+					<image>
+						<name>sgpc:1.0</name>
+					</image>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

@@ -39,8 +39,10 @@ $env:SGPC_JWT_SECRET = [Convert]::ToBase64String($b)
 ```
 
 E4.4 se despliega con Docker: tras copiar la solución, `cp .env.example .env` (editar valores),
-`./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=sgpc:1.1` y `docker compose up -d`;
+`./mvnw spring-boot:build-image` (su `pom.xml` fija el nombre `sgpc:1.1`, que usa su `compose.yaml`) y `docker compose up -d`;
 después se da de alta el administrador como en la Práctica 15.
+
+> **Avisos inofensivos de Maven.** Al construir o ejecutar, `./mvnw` puede mostrar `[WARNING] Could not transfer metadata ... from/to flyway-community-db-support (https://maven.pkg.github.com/...): HTTP Status: 401` y otro parecido para `red-gate.pkgs.visualstudio.com`. Proceden de los repositorios que declara el POM padre de Flyway (`org.flywaydb:flyway-parent`), no del `pom.xml` del proyecto, y no impiden la construcción: todas las dependencias se descargan de Maven Central y el resultado es `BUILD SUCCESS`.
 
 ## Resultados comprobados (10-11-2026, JDK 25, Spring Boot 4.1.2)
 
