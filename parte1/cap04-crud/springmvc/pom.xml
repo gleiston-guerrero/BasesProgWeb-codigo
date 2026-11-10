@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- pom.xml del CRUD de proveedores con Spring MVC clásico (sin Spring Boot).
+     Empaquetado WAR para un contenedor Jakarta Servlet 6.1 externo (Tomcat 11, Jetty 12.1).
+     Las versiones coinciden con las que gestiona Spring Boot 4.1.2. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.empresa</groupId>
+    <artifactId>proveedores-mvc</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <properties>
+        <maven.compiler.release>25</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring-framework.version>7.0.10</spring-framework.version>
+        <spring-data.version>2026.0.2</spring-data.version>
+        <hibernate.version>7.4.13.Final</hibernate.version>
+        <hibernate-validator.version>9.1.5.Final</hibernate-validator.version>
+        <expressly.version>6.0.0</expressly.version>
+        <jackson.version>3.1.7</jackson.version>
+        <h2.version>2.4.240</h2.version>
+        <servlet-api.version>6.1.0</servlet-api.version>
+        <jetty.version>12.1.14</jetty.version>
+    </properties>
+
+    <!-- Las BOM fijan de una vez la versión de todos los módulos de cada proyecto -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>${spring-framework.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-bom</artifactId>
+                <version>${spring-data.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>tools.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- Spring MVC: DispatcherServlet, @RestController, conversores HTTP -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <!-- Integración de Spring con JPA: LocalContainerEntityManagerFactoryBean, JpaTransactionManager -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+        </dependency>
+        <!-- Spring Data JPA: implementa ProveedorRepository en tiempo de ejecución -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+        </dependency>
+        <!-- Hibernate ORM: proveedor de Jakarta Persistence 3.2 -->
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <!-- Hibernate Validator (Jakarta Bean Validation 3.1) y su motor de expresiones EL -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate-validator.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.expressly</groupId>
+            <artifactId>expressly</artifactId>
+            <version>${expressly.version}</version>
+        </dependency>
+        <!-- Jackson 3: conversión JSON <-> objetos Java (JacksonJsonHttpMessageConverter) -->
+        <dependency>
+            <groupId>tools.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <!-- H2: base de datos embebida en memoria (solo desarrollo) -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- API de Jakarta Servlet 6.1: la aporta el contenedor, por eso es 'provided' -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>${servlet-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>proveedores-mvc</finalName>
+        <plugins>
+            <!-- -parameters conserva los nombres de los parámetros en el bytecode: Spring MVC los
+                 necesita para enlazar @PathVariable Long id con {id}. El parent de Spring Boot
+                 lo activa por su cuenta; sin él hay que declararlo (si no, error 500). -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.15.0</version>
+                <configuration>
+                    <parameters>true</parameters>
+                </configuration>
+            </plugin>
+            <!-- Sin web.xml: WebAppInitializer arranca la aplicación -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.5.1</version>
+            </plugin>
+            <!-- Solo para desarrollo: 'mvnw jetty:run' despliega la aplicación en un Jetty 12.1
+                 (Jakarta EE 11, Servlet 6.1) en http://localhost:8080/, sin instalar un servidor -->
+            <plugin>
+                <groupId>org.eclipse.jetty.ee11</groupId>
+                <artifactId>jetty-ee11-maven-plugin</artifactId>
+                <version>${jetty.version}</version>
+                <configuration>
+                    <webApp>
+                        <contextPath>/</contextPath>
+                    </webApp>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

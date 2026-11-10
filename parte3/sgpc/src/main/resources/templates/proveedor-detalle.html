@@ -1,0 +1,27 @@
+<!-- Archivo: src/main/resources/templates/proveedor-detalle.html -->
+<!-- Práctica 8 + Ejercicio E2.4 (aviso de límite elevado y pie) -->
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Detalle de proveedor - SGPC</title>
+</head>
+<body>
+<div th:replace="~{fragmentos/menu :: menu}"></div>
+<h1 th:text="${proveedor.razonSocial()}">Ejemplo S.A.</h1>
+<!-- (a) solo si el límite de crédito supera 50 000 -->
+<p th:if="${proveedor.limiteCredito() > 50000}">
+<strong>Proveedor con límite de crédito elevado</strong>
+</p>
+<dl>
+<dt>RUC</dt>
+<dd th:text="${proveedor.ruc()}">0000000000000</dd>
+<dt>Límite de crédito</dt>
+<!-- miles con coma, dos decimales con punto: 15,000.00 -->
+<dd th:text="${#numbers.formatDecimal(proveedor.limiteCredito(), 1, 'COMMA', 2, 'POINT')}">0.00</dd>
+</dl>
+<a th:href="@{/admin/proveedores}">Volver al listado</a>
+<!-- (b) pie reutilizado -->
+<footer th:replace="~{fragmentos/pie :: pie}"></footer>
+</body>
+</html>

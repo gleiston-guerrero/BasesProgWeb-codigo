@@ -1,0 +1,21 @@
+# Artefactos de compilación y dependencias
+target/
+vendor/
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.class
+*.log
+*.sqlite
+*.sqlite3
+db.sqlite3
+# Secretos y claves locales
+.env
+*.p12
+*.jks
+# IDE
+.idea/
+.vscode/
+*.iml
+.DS_Store

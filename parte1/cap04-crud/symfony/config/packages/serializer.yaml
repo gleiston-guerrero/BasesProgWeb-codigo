@@ -1,0 +1,5 @@
+# Archivo: config/packages/serializer.yaml
+framework:
+  serializer:
+    # razonSocial (PHP) <-> razon_social (JSON)
+    name_converter: 'serializer.name_converter.camel_case_to_snake_case'

@@ -1,0 +1,54 @@
+# Archivo: compose.yaml (dos instancias con caché compartida en Redis)
+# x-sgpc-app: bloque común de las dos instancias (extensión de Compose);
+# <<: *sgpc-app lo copia en app1 y app2 (clave de fusión de YAML)
+x-sgpc-app: &sgpc-app
+  image: sgpc:1.1            # reconstruida con el iniciador de Redis
+  depends_on:
+    db:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+  environment:
+    SPRING_PROFILES_ACTIVE: prod,redis
+    SGPC_DB_URL: jdbc:postgresql://db:5432/sgpc
+    SGPC_DB_USER: ${SGPC_DB_USER}
+    SGPC_DB_PASSWORD: ${SGPC_DB_PASSWORD}
+    SGPC_JWT_SECRET: ${SGPC_JWT_SECRET}
+    SGPC_REDIS_HOST: redis
+
+services:
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_DB: sgpc
+      POSTGRES_USER: ${SGPC_DB_USER}
+      POSTGRES_PASSWORD: ${SGPC_DB_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - datos_sgpc:/var/lib/postgresql
+
+  redis:
+    image: redis:8
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app1:
+    <<: *sgpc-app
+    ports:
+      - "8080:8080"
+
+  app2:
+    <<: *sgpc-app
+    ports:
+      - "8081:8080"          # segunda instancia: otro puerto del host
+
+volumes:
+  datos_sgpc:

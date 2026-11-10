@@ -1,0 +1,7 @@
+target/
+# El almacén de claves y el certificado se generan localmente (Listado de keytool): nunca se versionan
+*.p12
+*.crt
+.idea/
+*.iml
+.vscode/

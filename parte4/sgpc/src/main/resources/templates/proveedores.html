@@ -1,0 +1,33 @@
+<!-- Archivo: src/main/resources/templates/proveedores.html -->
+<!-- Capítulo 9 + Práctica 8 (enlace a la ficha) + Ejercicio E2.4 (menú y pie) -->
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Proveedores - SGPC</title>
+</head>
+<body>
+<div th:replace="~{fragmentos/menu :: menu}"></div>
+<h1>Proveedores registrados</h1>
+<table>
+<thead>
+<tr><th>RUC</th><th>Razón social</th><th>Límite</th></tr>
+</thead>
+<tbody>
+<!-- th:each itera: una fila <tr> por cada proveedor de la lista -->
+<tr th:each="p : ${proveedores}">
+<!-- th:text reemplaza el contenido con el valor del atributo -->
+<td th:text="${p.ruc()}">0000000000000</td>
+<td><a th:href="@{/admin/proveedores/{id}(id=${p.id()})}"
+       th:text="${p.razonSocial()}">Ejemplo S.A.</a></td>
+<td th:text="${p.limiteCredito()}">0.00</td>
+</tr>
+<!-- th:if muestra el mensaje solo si la lista está vacía -->
+<tr th:if="${proveedores.isEmpty()}">
+<td colspan="3">No hay proveedores registrados.</td>
+</tr>
+</tbody>
+</table>
+<footer th:replace="~{fragmentos/pie :: pie}"></footer>
+</body>
+</html>

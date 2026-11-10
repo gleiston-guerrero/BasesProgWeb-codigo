@@ -1,0 +1,37 @@
+# Archivo: compose.yaml (los valores ${...} se leen del archivo .env)
+services:
+  # Servicio de base de datos PostgreSQL
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_DB: sgpc
+      POSTGRES_USER: ${SGPC_DB_USER}
+      POSTGRES_PASSWORD: ${SGPC_DB_PASSWORD}
+    # "sano" solo cuando PostgreSQL acepta conexiones
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    # Desde la imagen 18, el volumen se monta en /var/lib/postgresql
+    volumes:
+      - datos_sgpc:/var/lib/postgresql
+
+  # Servicio de la aplicación SGPC
+  app:
+    image: sgpc:1.0
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SGPC_DB_URL: jdbc:postgresql://db:5432/sgpc
+      SGPC_DB_USER: ${SGPC_DB_USER}
+      SGPC_DB_PASSWORD: ${SGPC_DB_PASSWORD}
+      SGPC_JWT_SECRET: ${SGPC_JWT_SECRET}
+
+volumes:
+  datos_sgpc:

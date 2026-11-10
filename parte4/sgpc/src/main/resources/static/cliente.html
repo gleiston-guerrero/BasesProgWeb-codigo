@@ -1,0 +1,71 @@
+<!-- Archivo: src/main/resources/static/cliente.html -->
+<!-- Se abre en http://localhost:8080/cliente.html (mismo origen) -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Cliente SGPC</title>
+</head>
+<body>
+    <h1>Consulta de proveedores - SGPC</h1>
+    <!-- Las credenciales las escribe quien prueba: la página no contiene ninguna -->
+    <form id="acceso">
+        <label>Usuario
+            <input id="usuario" autocomplete="username" required>
+        </label>
+        <label>Contraseña
+            <input id="clave" type="password" autocomplete="current-password" required>
+        </label>
+        <button type="submit">Entrar y cargar proveedores</button>
+    </form>
+    <p id="estado"></p>
+    <ul id="lista"></ul>
+    
+    <script>
+        // 1) Autenticación: POST /auth/login devuelve {"token": "..."}
+        async function login(username, password) {
+            const resp = await fetch("/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
+            });
+            if (!resp.ok) {                     // 401: credenciales inválidas
+                throw new Error("Inicio de sesión rechazado: " + resp.status);
+            }
+            const datos = await resp.json();
+            return datos.token;
+        }
+        
+        // 2) Consulta protegida: envía el token en la cabecera Authorization.
+        async function cargar(evento) {
+            evento.preventDefault();            // el formulario no recarga la página
+            const estado = document.getElementById("estado");
+            const lista = document.getElementById("lista");
+            const clave = document.getElementById("clave");
+            lista.innerHTML = "";
+            try {
+                const token = await login(
+                    document.getElementById("usuario").value, clave.value);
+                clave.value = "";               // la contraseña no queda en pantalla
+                const resp = await fetch("/api/proveedores", {
+                    headers: { "Authorization": "Bearer " + token }
+                });
+                if (!resp.ok) {                 // 401, 403, 500...
+                    throw new Error("Consulta rechazada: " + resp.status);
+                }
+                const proveedores = await resp.json();
+                for (const p of proveedores) {
+                    const li = document.createElement("li");
+                    li.textContent = p.ruc + " - " + p.razonSocial;
+                    lista.appendChild(li);
+                }
+                estado.textContent = proveedores.length + " proveedor(es)";
+            } catch (error) {
+                estado.textContent = error.message;
+            }
+        }
+        
+        document.getElementById("acceso").addEventListener("submit", cargar);
+    </script>
+</body>
+</html>
