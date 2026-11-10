@@ -32,7 +32,7 @@ uvicorn app.main:app --reload
 ```bash
 api=http://127.0.0.1:8000/api/proveedores
 curl -s -i -X POST $api -H "Content-Type: application/json" \
-  -d '{"ruc":"1790012345001","razon_social":"Importadora XL","limite_credito":"50000.00"}'   # 201
+  -d '{"ruc":"1790012345001","razon_social":"Importadora XL","limite_credito":"50000.00"}'   # 201 y cabecera location: /api/proveedores/1
 curl -s -X POST $api -H "Content-Type: application/json" \
   -d '{"ruc":"1790012345001","razon_social":"Importadora XL","limite_credito":"50000.00"}'   # 409 {"detail":"RUC ya existe"}
 curl -s -X POST $api -H "Content-Type: application/json" \

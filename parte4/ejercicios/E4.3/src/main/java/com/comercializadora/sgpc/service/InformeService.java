@@ -50,7 +50,16 @@ public class InformeService {
                 .map(this::aLinea).toList();
     }
 
-    // Ejercicio E4.3, segunda parte: paginación en dos consultas
+    // Ejercicio E4.3, segunda parte: el JOIN FETCH paginado directamente
+    @Transactional(readOnly = true)
+    public PaginaCartera carteraPaginadaDirecta(int pagina, int tamanio) {
+        Pageable orden = PageRequest.of(pagina, tamanio, Sort.by("razonSocial", "id"));
+        Page<Proveedor> p = repositorio.buscarConContratosPaginado(orden);
+        return new PaginaCartera(p.getContent().stream().map(this::aLinea).toList(),
+                p.getNumber(), p.getSize(), p.getTotalElements(), p.getTotalPages());
+    }
+
+    // Ejercicio E4.3, tercera parte: paginación portable en dos consultas
     @Transactional(readOnly = true)
     public PaginaCartera carteraPaginada(int pagina, int tamanio) {
         Pageable orden = PageRequest.of(pagina, tamanio, Sort.by("razonSocial", "id"));

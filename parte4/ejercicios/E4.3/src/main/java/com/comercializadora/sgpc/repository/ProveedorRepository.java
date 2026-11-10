@@ -68,6 +68,12 @@ public interface ProveedorRepository
     @EntityGraph(attributePaths = "contratos")
     List<Proveedor> findAllByOrderByRazonSocialAsc();
 
+    // 0) El JOIN FETCH paginado directamente: Hibernate 7.4 limita los
+    //    proveedores en una subconsulta (no lo hacen las versiones anteriores)
+    @Query(value = "SELECT p FROM Proveedor p LEFT JOIN FETCH p.contratos",
+           countQuery = "SELECT COUNT(p) FROM Proveedor p")
+    Page<Proveedor> buscarConContratosPaginado(Pageable pageable);
+
     // 1) Solo los ids de la página; orden y límite llegan en el Pageable
     @Query(value = "SELECT p.id FROM Proveedor p",
            countQuery = "SELECT COUNT(p) FROM Proveedor p")

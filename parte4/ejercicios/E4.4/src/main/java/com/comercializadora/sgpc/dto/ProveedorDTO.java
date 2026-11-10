@@ -1,5 +1,5 @@
 // Archivo: src/main/java/com/comercializadora/sgpc/dto/ProveedorDTO.java
-// dto/ProveedorDTO.java -- lo que la API DEVUELVE
+// DTO de salida: lo que la API DEVUELVE
 package com.comercializadora.sgpc.dto;
 import com.comercializadora.sgpc.model.EstadoProveedor;
 import java.io.Serializable;

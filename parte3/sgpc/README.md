@@ -84,7 +84,8 @@ curl -s -X POST localhost:8080/api/proveedores -H "$H" -H "$A" \
      -d '{"ruc":"0990000001001","razonSocial":"Distribuidora Andina S.A.","limiteCredito":50000.00}'   # 201
 
 B=localhost:8080/api/proveedores/1/contratos
-F='"fechaInicio":"2026-01-01","fechaVencimiento":"2027-12-31"'   # debe incluir el día de hoy
+Y=$(date +%Y)                                                     # año en curso
+F="\"fechaInicio\":\"$Y-01-01\",\"fechaVencimiento\":\"$((Y+1))-12-31\""   # incluye el día de hoy
 curl -i -X POST $B -H "$H" -H "$A" -d "{\"numero\":\"C-2026-001\",\"monto\":10000.00,$F}"  # 201 + Location
 curl -s -X POST $B -H "$H" -H "$A" -d "{\"numero\":\"C-2026-002\",\"monto\":45000.00,$F}"  # 409 (40000.00 disponibles)
 curl -s -X POST $B -H "$H" -H "$A" -d '{}'                                                # 400 cuatro claves
@@ -102,4 +103,4 @@ verificación completos de las prácticas 10, 11 y 12 están en el libro.
 En Windows PowerShell se escribe `curl.exe`, las líneas se continúan con el acento grave (`` ` ``) y
 el cuerpo JSON se guarda en un archivo y se envía con `-d "@archivo.json"`; el token puede obtenerse con
 `$GESTOR = (Invoke-RestMethod -Method Post -Uri http://localhost:8080/auth/login -ContentType 'application/json' -Body '{"username":"gestor","password":"gestor-clave-dev"}').token`
-y enviarse con `-H "Authorization: Bearer $GESTOR"`.
+y enviarse con `-H "Authorization: Bearer $GESTOR"`. Las fechas se calculan igual: `$Y = (Get-Date).Year` y, en el JSON, `"$Y-01-01"` y `"$($Y+1)-12-31"`.

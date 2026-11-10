@@ -27,6 +27,14 @@ public class InformeController {
         return servicio.carteraPaginada(page, size);
     }
 
+    // Ejercicio E4.3, segunda parte: el JOIN FETCH paginado por Hibernate 7.4
+    // GET /api/informes/cartera/directa?page=0&size=2
+    @GetMapping("/cartera/directa")
+    public PaginaCartera carteraDirecta(@RequestParam(defaultValue = "0") int page,
+                                        @RequestParam(defaultValue = "20") int size) {
+        return servicio.carteraPaginadaDirecta(page, size);
+    }
+
     // Ejercicio E4.3, primera parte: el informe completo con @EntityGraph
     @GetMapping("/cartera/grafo")
     public List<LineaCartera> carteraConGrafo() {

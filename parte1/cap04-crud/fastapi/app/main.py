@@ -1,5 +1,5 @@
 # app/main.py
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI, HTTPException, Response, status
 from typing import List
 from .models import ProveedorCreate, ProveedorResponse
 
@@ -36,9 +36,10 @@ def leer(proveedor_id: int):
 # POST /proveedores → crear (201 Created)
 # status_code=201 define el código de respuesta para el caso exitoso.
 # El cuerpo es deserializado y validado por Pydantic automáticamente.
+# response: Response permite añadir cabeceras a la respuesta (aquí, Location).
 @app.post("/api/proveedores", response_model=ProveedorResponse,
     status_code=status.HTTP_201_CREATED)
-def crear(proveedor: ProveedorCreate):
+def crear(proveedor: ProveedorCreate, response: Response):
     global _siguiente_id
     # Verificar RUC duplicado
     if any(v['ruc'] == proveedor.ruc for v in _bd.values()):
@@ -47,6 +48,8 @@ def crear(proveedor: ProveedorCreate):
     _siguiente_id += 1
     # model_dump() convierte el modelo Pydantic a diccionario Python.
     _bd[nuevo_id] = proveedor.model_dump()
+    # Location: URI del recurso recién creado (buena práctica REST con 201)
+    response.headers["Location"] = f"/api/proveedores/{nuevo_id}"
     return ProveedorResponse(id=nuevo_id, **_bd[nuevo_id])
 
 # PUT /proveedores/{id} → reemplazar

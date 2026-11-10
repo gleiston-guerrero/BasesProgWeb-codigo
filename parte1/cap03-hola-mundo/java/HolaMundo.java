@@ -7,7 +7,8 @@
 public class HolaMundo {
 
     // main() es el punto de entrada de cualquier programa Java.
-    // public: accesible desde cualquier lugar (la JVM necesita llamarlo).
+    // En esta forma clásica, la JVM exige que main sea public y static:
+    // public: accesible desde cualquier lugar (la JVM debe poder llamarlo).
     // static: pertenece a la clase, no a una instancia (la JVM lo llama sin crear objeto).
     // void: no devuelve ningún valor.
     // String[] args: array de cadenas con los argumentos de línea de comandos.

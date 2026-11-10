@@ -36,8 +36,10 @@ public class Proveedor {
     // Dinero con BigDecimal, nunca con Double/double: la coma flotante binaria no
     // representa exactamente valores como 1.10 y acumula errores de redondeo.
     // precision/scale: 12 dígitos en total, 2 decimales (DECIMAL(12,2) en la BD).
+    // @NotNull: el campo es obligatorio (@Positive, por sí sola, acepta null).
     // @Positive: valida que el valor sea mayor que cero.
-    @Column(precision = 12, scale = 2)
+    @Column(nullable = false, precision = 12, scale = 2)
+    @NotNull(message = "El límite de crédito es obligatorio")
     @Positive(message = "El límite de crédito debe ser mayor que cero")
     private BigDecimal limiteCredito;
 

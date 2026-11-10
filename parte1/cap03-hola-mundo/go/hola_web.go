@@ -4,6 +4,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -11,5 +12,6 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "¡Hola Mundo desde un servidor Go!")
 	})
-	http.ListenAndServe(":3000", nil)
+	// Solo regresa si falla (p. ej., puerto ocupado): log.Fatal muestra el error
+	log.Fatal(http.ListenAndServe(":3000", nil))
 }

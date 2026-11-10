@@ -1,5 +1,5 @@
 // Archivo: src/main/java/com/comercializadora/sgpc/dto/ProveedorRequest.java
-// dto/ProveedorRequest.java -- lo que la API RECIBE al crear
+// DTO de entrada: lo que la API RECIBE al crear o actualizar
 package com.comercializadora.sgpc.dto;
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;

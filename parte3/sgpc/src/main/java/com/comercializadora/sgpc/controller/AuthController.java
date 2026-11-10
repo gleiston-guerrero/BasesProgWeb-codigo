@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
 
-    public record LoginRequest(@NotBlank String username,
-                               @NotBlank String password) {}
+    public record LoginRequest(
+            @NotBlank(message = "El usuario es obligatorio") String username,
+            @NotBlank(message = "La contraseña es obligatoria") String password) {}
     public record TokenResponse(String token) {}
 
     private final AuthenticationManager authenticationManager;
