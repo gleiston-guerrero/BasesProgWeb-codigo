@@ -27,7 +27,7 @@ Cada listado del libro indica el archivo y la carpeta de este repositorio a la q
 | `parte1/cap04-crud` | El mismo CRUD en Spring Boot, Spring MVC, Django, FastAPI, Laravel y Symfony; Práctica 4 |
 | `parte1/cap05-enrutamiento` | Enrutamiento en Spring Boot, Django, FastAPI y Laravel; Práctica 5 |
 | `parte1/ejercicios` | Soluciones de los ejercicios de la Parte I |
-| `parte2/sgpc` | Proyecto SGPC al final de la Parte II |
+| `parte2/sgpc`, `parte2/ejercicios`, `parte2/ejemplos` | SGPC al final de la Parte II (con E2.1–E2.4), soluciones de E2.5 y E2.6 y ejemplos independientes de los capítulos 8 y 9 |
 | `parte3/sgpc`, `parte3/ejercicios` | SGPC al final de la Parte III y soluciones de sus ejercicios |
 | `parte4/sgpc`, `parte4/ejercicios` | SGPC final (Flyway, perfiles, Docker Compose, pruebas) y soluciones |
 

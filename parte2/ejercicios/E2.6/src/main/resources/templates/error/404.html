@@ -1,0 +1,16 @@
+<!-- Archivo: src/main/resources/templates/error/404.html (Ejercicio E2.6) -->
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Página no encontrada - SGPC</title>
+</head>
+<body>
+<div th:replace="~{fragmentos/menu :: menu}"></div>
+<h1>No encontrado</h1>
+<!-- path y status los aporta el manejo de errores de Spring Boot -->
+<p>No existe ningún recurso en <code th:text="${path}">/ruta</code>
+(error <span th:text="${status}">404</span>).</p>
+<a th:href="@{/admin/proveedores}">Volver al listado</a>
+</body>
+</html>

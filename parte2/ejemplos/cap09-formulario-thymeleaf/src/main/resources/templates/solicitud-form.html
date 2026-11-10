@@ -1,0 +1,18 @@
+<!-- Archivo: src/main/resources/templates/solicitud-form.html -->
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Nueva solicitud</title>
+</head>
+<body>
+<p th:if="${mensaje}" th:text="${mensaje}">Solicitud registrada</p>
+<form th:action="@{/solicitudes}" th:object="${solicitud}" method="post">
+<label>RUC <input type="text" th:field="*{ruc}"></label>
+<span th:if="${#fields.hasErrors('ruc')}" th:errors="*{ruc}">Error del RUC</span>
+<label>Razón social <input type="text" th:field="*{razonSocial}"></label>
+<span th:if="${#fields.hasErrors('razonSocial')}" th:errors="*{razonSocial}">Error</span>
+<button type="submit">Enviar</button>
+</form>
+</body>
+</html>
