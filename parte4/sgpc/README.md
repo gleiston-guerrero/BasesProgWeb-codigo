@@ -66,7 +66,7 @@ Para la Práctica 13 se quita el `#` de la última línea de `application.proper
 cp .env.example .env          # PowerShell: Copy-Item .env.example .env  — y editar los valores
 ./mvnw spring-boot:build-image   # pom.xml fija el nombre de la imagen: sgpc:1.0
 docker compose up -d
-curl -i localhost:8080/actuator/health     # 503 mientras arranca; luego 200 UP
+curl -i localhost:8080/actuator/health     # 503 OUT_OF_SERVICE mientras arranca; luego 200 UP
 ```
 
 Alta del primer administrador (la tabla `usuarios` está vacía en producción):

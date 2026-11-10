@@ -16,7 +16,7 @@ práctica o el ejercicio que lo introduce o lo modifica.
 | Cap. 11 — API de contratos como subrecurso, paginación, reglas 400/404/409 | `controller/ContratoController.java`, `dto/ContratoRequest.java`, `dto/ContratoDTO.java`, `dto/PaginaContratos.java`, `repository/ContratoRepository.java`, `service/ContratoService.java`, `exception/Contrato*.java`, `exception/NumeroContratoDuplicadoException.java`, `exception/LimiteCreditoExcedidoException.java`, `exception/ProveedorNoActivoException.java`, `exception/OrdenNoValidoException.java`, métodos nuevos de `controller/ManejadorExcepciones.java` |
 | Cap. 11 — OpenAPI | dependencia `springdoc-openapi-starter-webmvc-ui` 3.2.0 del `pom.xml` |
 | Cap. 12 — JWT con el servidor de recursos de Spring Security | `model/Usuario.java`, `model/Rol.java`, `repository/UsuarioRepository.java`, `security/UsuarioDetailsService.java`, `security/TokenService.java`, `config/JwtConfig.java`, `config/SeguridadConfig.java`, `controller/AuthController.java`, propiedades `sgpc.jwt.*` |
-| Cap. 12 — baja lógica solo para ADMIN y auditoría con el usuario | `ProveedorController.darDeBaja` (`@PreAuthorize`), `ProveedorService.darDeBaja`, `audit/AuditoriaAspect.usuarioActual()` |
+| Cap. 12 — baja lógica solo para ADMIN, estado visible en la API y auditoría con el usuario | `ProveedorController.darDeBaja` (`@PreAuthorize`), `ProveedorService.darDeBaja`, `dto/ProveedorDTO.java` (campo `estado`, sustituye al de la Parte II) y `ProveedorService.aDTO`, `audit/AuditoriaAspect.usuarioActual()` |
 | Práctica 11 — usuarios de prueba (fuera del perfil `prod`) | `config/UsuariosIniciales.java` |
 | Cap. 12 — prueba de la Práctica 7 con la seguridad activa | `@WithMockUser` en `src/test/.../config/RedInternaFilterTest.java` y dependencia `spring-boot-starter-security-test` |
 | Cap. 13 — validación | `dto/ProveedorRequest.java` (sustituye al de la Parte II), `ContratoRequest.isRangoFechasValido()`, `ManejadorExcepciones.manejarValidacion` y `violacionIntegridad` |
@@ -92,6 +92,7 @@ curl -s "$B?sort=monto,desc" -H "$A"                                            
 curl -s "$B?sort=clave" -H "$A"                                                           # 400
 curl -i -X DELETE localhost:8080/api/proveedores/1 -H "$A"                                # 403 (GESTOR)
 curl -i -X DELETE localhost:8080/api/proveedores/1 -H "Authorization: Bearer $ADMIN"      # 204 (baja lógica)
+curl -s localhost:8080/api/proveedores/1 -H "$A"                                         # 200 ...,"estado":"INACTIVO"}
 curl -s -o /dev/null -w "%{http_code}\n" -L localhost:8080/swagger-ui.html                # 200
 ```
 

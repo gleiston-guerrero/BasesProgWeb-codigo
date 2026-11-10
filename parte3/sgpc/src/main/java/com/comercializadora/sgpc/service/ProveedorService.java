@@ -93,6 +93,6 @@ public class ProveedorService {
     // Método privado de mapeo entidad -> DTO
     private ProveedorDTO aDTO(Proveedor p) {
         return new ProveedorDTO(p.getId(), p.getRuc(),
-            p.getRazonSocial(), p.getLimiteCredito());
+            p.getRazonSocial(), p.getLimiteCredito(), p.getEstado());
     }
 }
